@@ -1,0 +1,268 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'css/linkup.jpg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <title>{{user_profile.user}}</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top d-none d-md-block  navbar_section">
+  <div class="container-fluid navbar_con">
+
+    <a href="/profile/{{ user }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" class="profile-img me-2" />
+      <span class="text-white">@{{ user }}</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+         <li class="nav-item ">
+           <a class="nav-link" href="/reels">
+               <i class="fa-solid fa-film"></i> Reels
+           </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/explore"><i class="fa-solid fa-compass"></i> Explore</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createPostModal">
+            <i class="fa-solid fa-circle-plus"></i> Create Post
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'account' %}">
+            <i class="fa-solid fa-comment"></i> Messages
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/profile/{{ user }}"><i class="fa-solid fa-user"></i> Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--second navbar-->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top d-md-none navbar_section">
+  <div class="container-fluid navbar_con">
+
+    <a href="/profile/{{ user }}" class="navbar-user-link d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" alt="Profile Pic" class="profile-img me-2" />
+      <span class="text-white idname">@{{ user }}</span>
+    </a>
+
+    <button class="navbar-toggler navbar_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto">
+        
+        <li class="nav-item"><a class="nav-link" href="/explore">
+          <i class="fa-solid fa-compass me-1"></i>Explore</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+            <i class="fa-solid fa-circle-plus me-1"></i>Create Post
+          </a>
+        </li>
+         <li>
+          {% if user == user_profile.user %}
+            <a type="button" class="nav-link" data-bs-toggle="modal"
+            data-bs-target="#exampleModal1">
+              <i class="fa-solid fa-user-pen"></i>Edit profile
+        </a>
+          {% endif %}
+      </li>
+        <li class="nav-item"><a class="nav-link" href="/logout">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </li> 
+      </ul>
+      {% comment %} <ul class="navbar-nav  ms-auto last_navbar">
+        <li>
+          {% if user == user_profile.user %}
+            <a type="button" class="nav-link" data-bs-toggle="modal"
+            data-bs-target="#exampleModal1">
+              <i class="fa-solid fa-user-pen"></i>Edit profile
+        </a>
+          {% endif %}
+      </li>
+        <li class="nav-item"><a class="nav-link" href="/logout">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </li>
+      </ul> {% endcomment %}
+    </div>
+  </div>
+</nav>
+
+            {% load static %}
+            <main role="main" class="container py-4">
+              {% include "search.html" %}
+              {% include "profile_upload.html" %}
+              {% include "edit_profile.html" %}
+        <section class="gradient-custom-2">
+            <div class="container py-4">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-lg-10">
+                        <div class="card">
+                          
+                            <div class="rounded-top text-white d-flex flex-row flex-wrap pt-2 profile_header" >
+                            
+                                <div class="d-flex flex-column align-items-center me-3 mb-3 profile_image" >
+                                    <img src="{{ user_profile.profileimg.url }}" alt="Profile" class="img-fluid img-thumbnail mt-1 mb-3 us_profile">
+                                    {% if user == user_profile.user %}
+                                    <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1">
+                                        Edit profile
+                                    </button>
+                                    {% endif %}
+                                </div>
+                       
+                                <div class="flex-grow-1 d-flex flex-column id_profile">
+                                    <p class="text-white" style="padding-top:10px; margin-bottom:0px;">@{{ user_profile.user }}</p>
+                                    <p style="margin-bottom:0px;"><i class="fa-solid fa-location-dot"></i> {{ user_profile.location }}</p>
+                                </div>
+                              
+                              {% if user != user_profile.user %}
+                                <div class="ms-auto align-self-end" style="margin-bottom: 10px; padding-right:10px;">
+                                   <form action="{% url 'followpage' %}" method="POST" class="d-inline">
+                                   {% csrf_token %}
+                                      <input type="hidden" name="follower" value="{{ user.username }}">
+                                      <input type="hidden" name="user" value="{{ user_object.username }}">
+                                      <button type="submit" class="btn btn-outline-light btn-sm foll" style="width:130px;">
+                              {{ follow_unfollow }}
+                          </button>
+                        </form>
+                      </div>
+                    {% endif %}
+
+                  </div>                            
+                            <div class="p-4 text-black bg-light">
+                                <div class="d-flex justify-content-around text-center">
+                                    <div>
+                                        <p class="mb-1 h5">{{ user_post_length }}</p>
+                                        <p class="small text-muted mb-0">Photos</p>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 h5">{{user_followers}}</p>
+                                        <p class="small text-muted mb-0">Followers</p>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 h5">{{user_following}}</p>
+                                        <p class="small text-muted mb-0">Following</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-body p-4">
+                                <div class="mb-4">
+                                    <h6 class="mb-3">About</h6>
+                                    <div class="p-3 bg-light rounded">
+                                        <p class="mb-0">{{ user_profile.bio }}</p>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Photos</h6>
+                                   <div class="image-grid">
+                             {% for pos in user_posts %}
+                               <div class="card image-item">
+
+                                  {% if pos.video %}
+                                      <div class="ratio ratio-1x1">
+                                         <video class="w-100 h-90"   controls playsinline preload="metadata">
+                                           <source src="{{ pos.video.url }}" type="video/mp4">
+                                               Your browser does not support the video tag.
+                                          </video>
+                                         </div>
+
+                                           {% elif pos.image %}
+                                              <img src="{{ pos.image.url }}" class="card-img-top img-fluid" alt="Post image">
+                                            {% endif %}
+
+                                    <div class="card-body p-2 ">
+                                       <div vlass="hidden-scroll">
+                                         <p class="card-title small mb-1 text-truncate">
+                                             {{ pos.caption }}
+                                          </p>
+                                       </div>
+                                          {% if user == user_profile.user %}
+                                            <a href="/delete/{{ pos.id }}" class="text-danger">
+                                               <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                          {% endif %}
+                                       </div>
+
+                                       </div>
+                                     {% endfor %}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+        </section>
+    </main>
+
+
+<div class="bottom-icons fixed-bottom d-md-none">
+
+  <!-- Home -->
+  <a href="/">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+
+  <a href="/explore">
+    <i class="fa-solid fa-compass"></i>
+  </a>
+
+
+  <a href="/reels">
+    <i class="fa-solid fa-film"></i>
+  </a>
+
+
+  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+    <i class="fa-solid fa-circle-plus add-icon"></i>
+  </a>
+
+
+  <a href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </a>
+
+  <a href="/profile/{{ user }}">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+</div>
+
+
+    <script src="{% static 'js/profile.js'%}"></script> 
+</body>
+</html>

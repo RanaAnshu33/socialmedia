@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Chat Box</title>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"crossorigin="anonymous"></script>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+     <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <link rel="shortcut icon" href="{% static 'css/linkup.jpg' %}" type="image/x-icon">
+     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top  d-none d-md-block navbar_section">
+    <div class="container-fluid navbar_con">
+
+    <a href="/profile/{{ user }}" class="navbar-user-link d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" alt="Profile Pic" class="profile-img me-2" />
+      <span class="text-white idname">@{{ user }}</span>
+    </a>
+
+    <button class="navbar-toggler navbar_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/">
+          <i class="fa-solid fa-house me-1"></i>Home</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/explore">
+          <i class="fa-solid fa-compass me-1"></i>Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createPostModal">
+            <i class="fa-solid fa-circle-plus me-1"></i>Create Post
+          </a>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link" href="/chat/{{ request.user.username }}">
+               <i class="fa-solid fa-comment me-1"></i>Messages
+             </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav  ms-auto last_navbar">
+        <li class="nav-item "><a class="nav-link" href="/profile/{{ user }}">
+          <i class="fa-solid fa-user me-1"></i>Profile</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/logout">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<nav class="navbar navbar-dark fixed-top navbar_section  d-md-none ">
+  <div class="container-fluid">
+    <a href="/profile/{{ user }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" class="profile-img me-2">
+      <span class="text-white">@{{ user }}</span>
+    </a>
+    <a href="{% url 'account' %}" class="text-white fs-5">
+      <i class="fa-solid fa-comment"></i>
+    </a>
+  </div>
+</nav>
+<div class="chat-container  ">
+    <h3 class="chat_header">
+    <p>
+        <i class="fa-solid fa-arrow-left" onclick="window.location.href='{% url 'account' %}'"></i>
+        Chat with {{ r.username }}
+    </p>
+
+    
+</h3>
+<div id="chatBox" class="chat-messages border p-3 " style="height: 350px; overflow-y: scroll;  " >
+{% for message in messages %}
+{% if message.sender == request.user %}
+
+<div class="message sender-message" id="message-{{ message.id }}">
+    <div class="bubble" onclick="toggleOptions({{ message.id }})">
+        <span class="texts" id="msg-{{ message.id }}">{{ message.content }}</span>
+        <span class="metas">
+            {{ message.timestamp|date:"H:i" }}
+            {% if message.is_seen %}
+                <i class="fa-solid fa-check-double seen"></i>
+            {% else %}
+                <i class="fa-solid fa-check"></i>
+            {% endif %}
+        </span>
+
+        <!-- OPTIONS -->
+        <div class="option-box" id="option-{{ message.id }}">
+            <button onclick="editMessage({{ message.id }})">
+                <i class="fa fa-pen"></i> Edit
+            </button>
+            <button onclick="deleteMessage({{ message.id }})">
+               <i class="fa fa-trash"></i> Delete
+             </button>
+            <button onclick="copyMessage({{ message.id }})">
+                <i class="fa fa-copy"></i> Copy
+            </button>
+            <button onclick="shareMessage({{ message.id }})">
+                <i class="fa fa-share"></i> Share
+            </button>
+        </div>
+    </div>
+</div>
+
+   
+
+{% else %}
+
+<div class="message receiver-message">
+    <div class="bubble">
+        <span class="text">{{ message.content }}</span>
+        <span class="meta">{{ message.timestamp|date:"H:i" }}</span>
+    </div>
+</div>
+
+{% endif %}
+{% endfor %}
+  </div>
+
+    <form method="POST" id="messageForm" style="position: sticky; bottom: 10px; border-radius:20px;">
+        {% csrf_token %}
+        <div class="input-group mt-3">
+
+            <input type="text" name="msg" id="messageInput"  class="form-control" placeholder="Type your message here...">
+          
+            <button type="submit" class="btn send_button">Send</button>
+        </div>
+    </form>
+</div>
+
+<div class="bottom-icons fixed-bottom d-md-none">
+  <a href="/">
+    <i class="fa-solid fa-house"></i>
+  </a>
+  <a href="/explore">
+    <i class="fa-solid fa-compass"></i>
+  </a>
+  <a href="/reels">
+    <i class="fa-solid fa-film"></i>
+  </a>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+    <i class="fa-solid fa-circle-plus add-icon"></i>
+  </a>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </a>
+  <a href="/profile/{{ user }}">
+    <i class="fa-solid fa-user"></i>
+  </a>
+</div>
+<script>
+/* CSRF  */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(cookie => {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        });
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie("csrftoken");
+
+/* SCROLL */
+let isUserScrolling = false;
+let isFirstLoad = true;
+const chatBox = document.getElementById("chatBox");
+
+chatBox.addEventListener("scroll", () => {
+    isUserScrolling =
+        chatBox.scrollTop + chatBox.clientHeight <
+        chatBox.scrollHeight - 50;
+});
+
+/* FETCH MESSAGES  */
+function fetchMessages() {
+    fetch("/chat/{{ r.username }}/get_messages/")
+        .then(res => res.json())
+        .then(data => {
+
+            if (chatBox.children.length === data.messages.length) return;
+            chatBox.innerHTML = "";
+
+            data.messages.forEach(msg => {
+                const div = document.createElement("div");
+                div.classList.add("message");
+                div.id = `message-${msg.id}`;
+
+                if (msg.sender === "{{ request.user.username }}") {
+                    div.classList.add("sender-message");
+                    div.innerHTML = `
+                        <div class="bubble" onclick="toggleOptions(${msg.id})">
+                            <span class="texts" id="msg-${msg.id}">
+                                ${msg.content}
+                            </span>
+                            <span class="metas">
+                                ${msg.timestamp}
+                                ${msg.is_seen
+                                    ? '<i class="fa-solid fa-check-double seen"></i>'
+                                    : '<i class="fa fa-check"></i>'}
+                            </span>
+
+                            <div class="option-box" id="option-${msg.id}">
+                                <button onclick="editMessage(${msg.id})">Edit</button>
+                                <button onclick="deleteMessage(${msg.id})">Delete</button>
+                                <button onclick="copyMessage(${msg.id})">Copy</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    div.classList.add("receiver-message");
+                    div.innerHTML = `
+                        <div class="bubble">
+                            <span class="text">${msg.content}</span>
+                            <span class="meta">${msg.timestamp}</span>
+                        </div>
+                    `;
+                }
+
+                chatBox.appendChild(div);
+            });
+
+            if (isFirstLoad || !isUserScrolling) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+                isFirstLoad = false;
+            }
+        });
+}
+
+/* SEND MESSAGE  */
+document.getElementById("messageForm").onsubmit = e => {
+    e.preventDefault();
+    const input = document.getElementById("messageInput");
+    if (!input.value.trim()) return;
+
+    fetch("", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrftoken,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `msg=${encodeURIComponent(input.value)}`
+    }).then(() => {
+        input.value = "";
+        fetchMessages();
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+};
+
+/*  OPTIONS  */
+function toggleOptions(id) {
+    document.querySelectorAll(".option-box").forEach(b => b.style.display = "none");
+    const box = document.getElementById(`option-${id}`);
+    if (box) box.style.display = "block";
+}
+
+function editMessage(id) {
+    const msg = document.getElementById(`msg-${id}`);
+    const newText = prompt("Edit message:", msg.innerText);
+
+    if (!newText || !newText.trim()) return;
+
+    fetch('/chat/edit-chat-message/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({
+            id: id,
+            content: newText
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            msg.innerText = newText;
+        }
+    });
+}
+
+/* DELETE  */
+function deleteMessage(id) {
+    if (!confirm("Delete message?")) return;
+
+    fetch('/chat/delete-chat-message/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "deleted") {
+            document.getElementById(`message-${id}`).remove();
+        }
+    });
+}
+
+/*  COPY */
+function copyMessage(id) {
+    navigator.clipboard.writeText(
+        document.getElementById(`msg-${id}`).innerText
+    );
+    alert("Copied");
+}
+function shareMessage(id) {
+    const text = document.getElementById(`msg-${id}`).innerText;
+    if (navigator.share) {
+        navigator.share({ text });
+    } else {
+        alert("Share not supported");
+    }
+}
+/*  CLOSE OPTIONS */
+document.addEventListener("click", e => {
+    if (!e.target.closest(".bubble")) {
+        document.querySelectorAll(".option-box").forEach(b => b.style.display = "none");
+    }
+});
+
+/* AUTO LOAD */
+window.onload = () => {
+    fetchMessages();
+    chatBox.scrollTop = chatBox.scrollHeight;
+};
+setInterval(fetchMessages, 1000);
+</script>
+
+</body>
+</html>

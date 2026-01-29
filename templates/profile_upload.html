@@ -1,0 +1,55 @@
+{% load static %}
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/upload/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <!-- IMAGE UPLOAD -->
+                    <div class="mb-3">
+                        <img src="{% static 'css/upload.png' %}" class="mb-2" width="60">
+
+                        <label class="form-label">Photo</label>
+                        <input type="file" name="image_upload" class="form-control" accept="image/*">
+                    </div>
+
+                    <!-- VIDEO UPLOAD -->
+                    <div class="mb-3">
+                        <label class="form-label">Video</label>
+                        <input type="file" name="video" class="form-control" accept="video/*">
+                    </div>
+
+                    <!-- CAPTION -->
+                    <div class="mb-3">
+                        <label class="form-label">Caption</label>
+                        <textarea class="form-control" name="caption" placeholder="Write caption..."></textarea>
+                    </div>
+
+                    <small class="text-muted">
+                        Upload either an image or a video (not both)
+                    </small>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Create Post
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

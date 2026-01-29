@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Results - {{ query }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="{% static 'css/linkup.jpg' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/search-user.css' %}" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top d-none d-md-block  navbar_section">
+  <div class="container-fluid navbar_con">
+
+    <a href="/profile/{{ user }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" class="profile-img me-2" />
+      <span class="text-white">@{{ user }}</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+         <li class="nav-item ">
+           <a class="nav-link" href="/reels">
+               <i class="fa-solid fa-film"></i>Reels
+           </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/explore"><i class="fa-solid fa-compass"></i> Explore</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createPostModal">
+            <i class="fa-solid fa-circle-plus"></i> Create Post
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'account' %}">
+            <i class="fa-solid fa-comment"></i> Messages
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/profile/{{ user }}"><i class="fa-solid fa-user"></i> Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-dark fixed-top navbar_section  d-md-none ">
+  <div class="container-fluid">
+
+
+    <a href="/profile/{{ user }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" class="profile-img me-2">
+      <span class="text-white">@{{ user }}</span>
+    </a>
+
+
+    <a href="{% url 'account' %}" class="text-white fs-5">
+      <i class="fa-solid fa-comment"></i>
+    </a>
+
+  </div>
+</nav>
+
+<div class="container mt-5">
+    
+<h3 class="text-center mb-4 colorful-title">
+  <span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span><span> </span>
+  <span>R</span><span>e</span><span>s</span><span>u</span><span>l</span><span>t</span><span>s</span><span> </span>
+  <span style="color: #1982c4;">f</span><span style="color: #6a4c93;">o</span><span style="color: #ffca3a;">r</span><span> </span><span style="color: #4a059a;"></span> 
+<hr style="color: #ba7cbaff;"></hr></h3>
+    <h4>User Profiles</h4>
+    {% if users %}
+      <table class="table">
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td class="d-flex align-items-center">
+                {% if user.profileimg %}
+                  <img src="{{ user.profileimg.url }}" alt="Profile" class="rounded-circle me-3" width="35" height="35" margin-right="0px">
+                {% else %}
+                  <img src="{% static 'images/default-profile.png' %}" alt="Default Profile" class="rounded-circle me-3" width="35" height="35" margin-right="0px">
+                {% endif %}
+                <h5 class="mb-0" >
+                  <strong>
+                    <a href="/profile/{{ user.user.username }}">@{{ user.user.username }}  </a>
+                  </strong>
+                </h5>
+                <div class="chat_box d-flex justify-content-end w-100">
+                    <a href="{% url 'chat' user.user.username %}">
+                     <i class="fa-solid fa-paper-plane"></i>
+                    </a>
+                </div>
+                </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+        <button class="home-btn" onclick="window.location.href='{% url 'home' %}'">
+         <b>Go To Home Page</b>
+        </button>
+        
+    {% else %}
+      <p class="no-results">No users found matching your search.</p>
+      <button class="home-btn" onclick="window.location.href='{% url 'home' %}'">
+         <b>Go To Home Page</b>
+      </button>
+    {% endif %}
+
+  </div>
+  
+<div class="bottom-icons fixed-bottom d-md-none">
+
+  <a href="/explore">
+    <i class="fa-solid fa-compass"></i>
+  </a>
+
+  <a href="/reels">
+    <i class="fa-solid fa-film"></i>
+  </a>
+
+
+  <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#createPostModal">
+    <i class="fa-solid fa-circle-plus add-icon"></i>
+  </a>
+
+  <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#searchModal">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </a>
+
+  <a href="/profile/{{ user }}">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+</div>
+
+<script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

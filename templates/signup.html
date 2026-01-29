@@ -1,0 +1,70 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SignUp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'css/linkup.jpg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/signups.css' %}">
+</head>
+<body>
+    <canvas id="magic-canvas" class="hidden-scroll"></canvas>
+      <div class="form-container">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <h3 class="colorful-title"><span>S</span><span>i</span><span>g</span><span>n</span><span>u</span><span>p</span><span> </span>
+            <span>P</span><span>a</span><span>g</span><span>e</span></h3>
+            {% if invalid %}
+               <div class="alert alert-success text-center" role="alert">
+                {{ invalid }}
+            </div>
+            {% endif %}
+ 
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <div class="mb-3 text-start">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="fnm" placeholder="Enter your username" id="fnm" required />
+            </div>
+
+            <div class="mb-3 text-start">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="emailid" placeholder="Enter your email" id="email" required />
+            </div>
+
+            <div class="mb-3 text-start">
+                <label for="password1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="pwd" placeholder="Enter password" id="password1" required />
+            </div>
+
+            <div class="mb-3 text-start">
+                <label for="password2" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="cpwd" placeholder="Confirm password" id="password2" required />
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-custom">Signup</button>
+            </div>
+
+            <div class="account">
+                <p>I have already account? <a href="{% url 'loginn' %}">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/signup.js' %}"></script>
+</body>
+</html>

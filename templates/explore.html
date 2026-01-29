@@ -1,0 +1,147 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Explore</title>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="{% static 'css/linkup.jpg' %}" type="image/x-icon">
+  
+  <link rel="stylesheet" href="{% static 'css/explore.css' %}" />
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top d-none d-md-block navbar_section">
+    <div class="container-fluid navbar_con">
+
+    <a href="/profile/{{ user }}" class="navbar-user-link d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" alt="Profile Pic" class="profile-img me-2" />
+      <span class="text-white idname">@{{ user }}</span>
+    </a>
+
+    <button class="navbar-toggler navbar_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="/">
+          <i class="fa-solid fa-house me-1"></i>Home</a>
+        </li>
+
+         <li class="nav-item ">
+           <a class="nav-link" href="/reels">
+               <i class="fa-solid fa-film"></i> Reels
+           </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/explore">
+          <i class="fa-solid fa-compass me-1"></i>Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>Search
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createPostModal">
+            <i class="fa-solid fa-circle-plus me-1"></i>Create Post
+          </a>
+        </li>
+        <li class="nav-item">
+             <a class="nav-link" href="/chat/{{ request.user.username }}">
+               <i class="fa-solid fa-comment me-1"></i>Messages
+             </a>
+        </li>
+
+      </ul>
+
+      <ul class="navbar-nav  ms-auto last_navbar">
+        <li class="nav-item "><a class="nav-link" href="/profile/{{ user }}">
+          <i class="fa-solid fa-user me-1"></i>Profile</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/logout">
+          <i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<nav class="navbar navbar-dark fixed-top navbar_section  d-md-none ">
+  <div class="container-fluid">
+
+
+    <a href="/profile/{{ user }}" class="d-flex align-items-center text-decoration-none">
+      <img src="{{ profile.profileimg.url }}" class="profile-img me-2">
+      <span class="text-white">@{{ user }}</span>
+    </a>
+
+
+    <a href="{% url 'account' %}" class="text-white fs-5">
+      <i class="fa-solid fa-comment"></i>
+    </a>
+
+  </div>
+</nav>
+   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+    {% include "modal.html" %}
+    {% include "search.html" %}
+    
+    <div class="container-fluid py-3 mt-3 ">
+        <div class="row ">
+            {% for pos in post %}
+             <div class="col-md-4">
+                <div class="image_s position-relative overflow-hidden">
+                    {% if pos.video %}
+                      <video class="card-img-top" style="height:380px;" controls>
+                         <source src="{{ pos.video.url }}">
+                      </video>
+                        {% elif pos.image %}
+                           <img src="{{ pos.image.url }}" class="card-img-top" style="height:380px;">
+                         {% endif %}
+                            <div class="image__overlay image__overlay--primary d-xfle flex-column   " style="background-color: rgba(244, 245, 243, 1); color:black; padding:5px; margin-bottom:15px; height:140px">
+                               <div class="image__title mb-1" >
+                                 <a href="/profile/{{ pos.user }}" class=" text-decoration-none ">@{{ pos.user }}</a>
+                            </div>
+                                 <div class="hidden-scroll" style=" max-height: 50px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none; ">
+                                    <p class="image__description mb-3" >{{ pos.caption }}</p>
+                                 </div>
+                         </div>
+                 </div>
+             </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<div class="bottom-icons fixed-bottom d-md-none">
+  <a href="/">
+    <i class="fa-solid fa-house"></i>
+  </a>
+  <a href="/explore">
+    <i class="fa-solid fa-compass"></i>
+  </a>
+  <a href="/reels">
+    <i class="fa-solid fa-film"></i>
+  </a>
+  <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#createPostModal">
+    <i class="fa-solid fa-circle-plus add-icon"></i>
+  </a>
+  <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#searchModal">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </a>
+  <a href="/profile/{{ user }}">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+</div>
+
+    <script src="{% static 'js/explore.js'%}"></script>
+</body>
+</html>
