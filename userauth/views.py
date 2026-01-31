@@ -360,7 +360,7 @@ def home(request):
         'post': post,
         'profile': profile,
     }
-    return render(request, 'index.html',context)
+    return render(request, 'main.html',context)
 
 def likepage(request, id):
     if request.method == "GET":
