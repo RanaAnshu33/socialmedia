@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7p(j#vft(o8$nq+k(a&5@gbquv&=(-81&w)$legg3#ce)^u+&d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['socialmedias.onrender.com']
 
 
 # Application definition
