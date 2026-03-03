@@ -28,8 +28,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = 'django-insecure-7p(j#vft(o8$nq+k(a&5@gbquv&=(-81&w)$legg3#ce)^u+&d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-DEBUG = False
+DEBUG = os.getenv("DEBUG") == "True"
 ALLOWED_HOSTS = ["127.0.0.1",
     "localhost",
     "socialmedias.onrender.com",]
@@ -46,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userauth',
     'userauth.chat',
-      
+
 ]
 
 MIDDLEWARE = [
@@ -126,13 +125,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -149,7 +156,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = '	linkup.social12@gmail.com'
-EMAIL_HOST_PASSWORD = 'gpwj qxoi lkhp kmjc'
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #tlew czpc iizq lodw
