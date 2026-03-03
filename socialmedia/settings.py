@@ -28,11 +28,7 @@ import os
 
 DEBUG = False   # Production me True mat rakho
 
-ALLOWED_HOSTS = [
-    'socialmedias.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ["*"]
 
 # Render automatically HTTPS use karta hai
 CSRF_TRUSTED_ORIGINS = [
