@@ -25,16 +25,14 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = 'django-insecure-7p(j#vft(o8$nq+k(a&5@gbquv&=(-81&w)$legg3#ce)^u+&d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import os
+DEBUG = False
 
-DEBUG = False   # Production me True mat rakho
-
-ALLOWED_HOSTS = ["*"]
-
-# Render automatically HTTPS use karta hai
-CSRF_TRUSTED_ORIGINS = [
-    'https://socialmedias.onrender.com'
+ALLOWED_HOSTS = [
+    'socialmedias.onrender.com',
+    'localhost',
+    '127.0.0.1',
 ]
+
 # Application definition
 
 INSTALLED_APPS = [
