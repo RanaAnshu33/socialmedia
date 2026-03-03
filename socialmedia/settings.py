@@ -28,7 +28,10 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = 'django-insecure-7p(j#vft(o8$nq+k(a&5@gbquv&=(-81&w)$legg3#ce)^u+&d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
+
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1",
     "localhost",
@@ -51,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,14 +133,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # agar aapka project static folder use karta hai
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
