@@ -25,15 +25,17 @@ load_dotenv(BASE_DIR / ".env")
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7p(j#vft(o8$nq+k(a&5@gbquv&=(-81&w)$legg3#ce)^u+&d'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 ALLOWED_HOSTS = ["127.0.0.1",
     "localhost",
-    "socialmedias.onrender.com",]
+    "socialmediaapp.onrender.com",]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://socialmediaapp.onrender.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,12 +140,14 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 SECRET_KEY = os.getenv("SECRET_KEY")
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -155,7 +159,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '	linkup.social12@gmail.com'
+EMAIL_HOST_USER = 'linkup.social12@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
