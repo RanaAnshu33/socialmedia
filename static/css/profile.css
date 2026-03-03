@@ -237,6 +237,7 @@ a.text-decoration-none:hover {
 .id_profile {
     text-align: end;
     margin-right: 20px;
+   
     
 }
 .caption-scroll {
@@ -287,6 +288,20 @@ body{
     font-size: 15px;
     border: none;
 }
+
+/* .custom-scroll {
+  max-height: 80px;
+  width: 120px;
+  overflow-y: scroll; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  font-size: 10px;
+  padding: 0px;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  display: none; 
+} */
 @media (max-width: 767.98px) {
     .navbar a.d-flex.align-items-center.text-decoration-none.text-dark img {
         width: 32px;

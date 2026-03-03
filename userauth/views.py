@@ -130,7 +130,7 @@ def signup(request):
             </td>
           </tr>
 
-          <!-- Footer -->
+          <!-- Footer -->   
           <tr>
             <td style="color:#9ca3af; font-size:14px; padding-top:20px;">
               Thanks,<br>
